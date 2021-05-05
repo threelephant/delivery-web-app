@@ -1,5 +1,5 @@
 import axios from 'axios';
-import api from './apiHost';
+import api from '../apiHost';
 
 const url = `${api}/store/categories`;
 

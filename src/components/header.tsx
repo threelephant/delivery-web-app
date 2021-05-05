@@ -1,10 +1,11 @@
 import React from 'react';
-import { withStyles, createStyles, Theme, fade } from "@material-ui/core/styles";
+import { Theme, fade, makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Button, InputBase, Typography, Grid } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
+import { Link } from 'gatsby';
 
-const useStyles = (theme: Theme) =>
-    createStyles({
+const useStyles = makeStyles((theme: Theme) =>
+    ({
         root: {
             flexGrow: 1,
         },
@@ -50,50 +51,49 @@ const useStyles = (theme: Theme) =>
               width: '40ch',
             },
           },
-    });
+    }));
 
-interface MyProps {
-    classes: any
-}
-
-class Header extends React.Component<MyProps, {}> {
-    render() {
-        const { classes } = this.props;
-        return (
-            <div className={classes.root}>
-                <AppBar position="static">
-                    <Toolbar>
-                        <Grid container justify="space-between">
-                            <Grid item>
+function Header() {
+    const classes = useStyles();
+    return (
+        <div className={classes.root}>
+            <AppBar position="static">
+                <Toolbar>
+                    <Grid container justify="space-between">
+                        <Grid item>
+                            <Link 
+                                to="/"
+                                style={{ color: "inherit", textDecoration: "inherit" }}
+                            >
                                 <Typography variant="h6" className={classes.title}>
                                     Доставка
                                 </Typography>
-                            </Grid>
-                            <Grid item>
-                            <div className={classes.search}>
-                                <div className={classes.searchIcon}>
-                                    <Search />
-                                </div>
-                                    <InputBase
-                                        placeholder="Поиск магазинов..."
-                                        classes={{
-                                            root: classes.inputRoot,
-                                            input: classes.inputInput,
-                                        }}
-                                        inputProps={{ 'aria-label': 'search' }}
-                                    />
-                                </div>
-                            </Grid>
-                            <Grid item>
-                                <Button color="inherit">Регистрация</Button>
-                                <Button color="inherit">Войти</Button>
-                            </Grid>
+                            </Link>
                         </Grid>
-                    </Toolbar>
-                </AppBar>
-            </div>
-        );
-    }
+                        <Grid item>
+                        <div className={classes.search}>
+                            <div className={classes.searchIcon}>
+                                <Search />
+                            </div>
+                                <InputBase
+                                    placeholder="Поиск магазинов..."
+                                    classes={{
+                                        root: classes.inputRoot,
+                                        input: classes.inputInput,
+                                    }}
+                                    inputProps={{ 'aria-label': 'search' }}
+                                />
+                            </div>
+                        </Grid>
+                        <Grid item>
+                            <Button color="inherit">Регистрация</Button>
+                            <Button color="inherit">Войти</Button>
+                        </Grid>
+                    </Grid>
+                </Toolbar>
+            </AppBar>
+        </div>
+    );
 }
 
-export default withStyles(useStyles)(Header);
+export default Header;
