@@ -3,6 +3,9 @@ import { Theme, fade, makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Button, InputBase, Typography, Grid } from '@material-ui/core';
 import { Search } from '@material-ui/icons';
 import { Link } from 'gatsby';
+import { useSelector, useDispatch } from 'react-redux';
+import { RootState } from '../reducers/index';
+import { signIn } from '../actions/auth';
 
 const useStyles = makeStyles((theme: Theme) =>
     ({
@@ -55,6 +58,10 @@ const useStyles = makeStyles((theme: Theme) =>
 
 function Header() {
     const classes = useStyles();
+
+    const dispatch = useDispatch();
+    const isLogged = useSelector<RootState>(state => state.isLogged);
+
     return (
         <div className={classes.root}>
             <AppBar position="static">
@@ -85,10 +92,20 @@ function Header() {
                                 />
                             </div>
                         </Grid>
-                        <Grid item>
-                            <Button color="inherit">Регистрация</Button>
-                            <Button color="inherit">Войти</Button>
-                        </Grid>
+                        {sessionStorage.getItem("username") != null ? (
+                            <Grid item>
+                                <Button onClick={() => {sessionStorage.removeItem("username"); sessionStorage.removeItem("loggedUser"); (window as any).location = "/";}} color="inherit">
+                                    Выйти
+                                </Button>
+                            </Grid>)
+                            :
+                            (
+                            <Grid item>
+                                <Button component={ Link } to="/register" color="inherit">Регистрация</Button>
+                                <Button component={ Link } to="/login" color="inherit">Войти</Button>
+                            </Grid>
+                            )
+                        }
                     </Grid>
                 </Toolbar>
             </AppBar>
