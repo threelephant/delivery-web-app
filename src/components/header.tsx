@@ -1,11 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Theme, fade, makeStyles } from "@material-ui/core/styles";
-import { AppBar, Toolbar, Button, InputBase, Typography, Grid } from '@material-ui/core';
-import { Search } from '@material-ui/icons';
+import { AppBar, Toolbar, Button, InputBase, Typography, Grid, IconButton } from '@material-ui/core';
+import { Search, Menu } from '@material-ui/icons';
 import { Link } from 'gatsby';
-import { useSelector, useDispatch } from 'react-redux';
-import { RootState } from '../reducers/index';
-import { signIn } from '../actions/auth';
+import MenuDrawer from './drawer';
 
 const useStyles = makeStyles((theme: Theme) =>
     ({
@@ -16,7 +14,10 @@ const useStyles = makeStyles((theme: Theme) =>
             marginRight: theme.spacing(1),
         },
         title: {
-            flexGrow: 1,
+            display: 'none',
+            [theme.breakpoints.up('sm')]: {
+                display: 'block',
+            },
         },
         search: {
             position: 'relative',
@@ -59,54 +60,61 @@ const useStyles = makeStyles((theme: Theme) =>
 function Header() {
     const classes = useStyles();
 
-    const dispatch = useDispatch();
-    const isLogged = useSelector<RootState>(state => state.isLogged);
+    const [ toggle, setToggle ] = useState(false);
 
     return (
         <div className={classes.root}>
             <AppBar position="static">
                 <Toolbar>
-                    <Grid container justify="space-between">
-                        <Grid item>
-                            <Link 
-                                to="/"
-                                style={{ color: "inherit", textDecoration: "inherit" }}
+                    {sessionStorage.getItem("username") != null ?  
+                        (<div>
+                            <IconButton
+                                onClick={() => setToggle(true)}
+                                edge="start" 
+                                color="inherit" 
+                                aria-label="menu"
                             >
-                                <Typography variant="h6" className={classes.title}>
-                                    Доставка
-                                </Typography>
-                            </Link>
-                        </Grid>
-                        <Grid item>
-                        <div className={classes.search}>
-                            <div className={classes.searchIcon}>
-                                <Search />
-                            </div>
-                                <InputBase
-                                    placeholder="Поиск магазинов..."
-                                    classes={{
-                                        root: classes.inputRoot,
-                                        input: classes.inputInput,
-                                    }}
-                                    inputProps={{ 'aria-label': 'search' }}
-                                />
-                            </div>
-                        </Grid>
-                        {sessionStorage.getItem("username") != null ? (
-                            <Grid item>
-                                <Button onClick={() => {sessionStorage.removeItem("username"); sessionStorage.removeItem("loggedUser"); (window as any).location = "/";}} color="inherit">
-                                    Выйти
-                                </Button>
-                            </Grid>)
-                            :
-                            (
-                            <Grid item>
-                                <Button component={ Link } to="/register" color="inherit">Регистрация</Button>
-                                <Button component={ Link } to="/login" color="inherit">Войти</Button>
-                            </Grid>
-                            )
-                        }
-                    </Grid>
+                                <Menu />
+                            </IconButton>
+                            <MenuDrawer toggle={toggle} setToggle={setToggle} />
+                        </div>) : (<div />)}
+                        <Link 
+                            to="/"
+                            style={{ color: "inherit", textDecoration: "inherit" }}
+                        >
+                            <Typography variant="h6" className={classes.title}>
+                                Доставка
+                            </Typography>
+                        </Link>
+                    <div className={classes.root}></div>
+                    <div className={classes.search}>
+                        <div className={classes.searchIcon}>
+                            <Search />
+                        </div>
+                            <InputBase
+                                placeholder="Поиск магазинов..."
+                                classes={{
+                                    root: classes.inputRoot,
+                                    input: classes.inputInput,
+                                }}
+                                inputProps={{ 'aria-label': 'search' }}
+                            />
+                        </div>
+                    <div className={classes.root}></div>
+                    {sessionStorage.getItem("username") != null ? (
+                        <div>
+                            <Button onClick={() => {sessionStorage.removeItem("username"); sessionStorage.removeItem("loggedUser"); (window as any).location = "/";}} color="inherit">
+                                Выйти
+                            </Button>
+                        </div>)
+                        :
+                        (
+                        <div>
+                            <Button component={ Link } to="/register" color="inherit">Регистрация</Button>
+                            <Button component={ Link } to="/login" color="inherit">Войти</Button>
+                        </div>
+                        )
+                    }
                 </Toolbar>
             </AppBar>
         </div>
