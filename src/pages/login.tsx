@@ -37,6 +37,10 @@ function Login() {
                 'username', loggedItem.username
             );
 
+            window.sessionStorage.setItem(
+                'token', loggedItem.token
+            );
+
             (window as any).location = "/";
         } catch (exception) {
             console.error(exception.message);

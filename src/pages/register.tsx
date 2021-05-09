@@ -40,6 +40,10 @@ function Register() {
             window.sessionStorage.setItem(
                 'username', loggedItem.username
             );
+
+            window.sessionStorage.setItem(
+                'token', loggedItem.token
+            );
             
             (window as any).location = "/";
         } catch (exception) {
