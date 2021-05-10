@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Theme, fade, makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Button, InputBase, Typography, Grid, IconButton } from '@material-ui/core';
-import { Search, Menu } from '@material-ui/icons';
+import { Search, Menu, ShoppingCart } from '@material-ui/icons';
 import { Link } from 'gatsby';
 import MenuDrawer from './drawer';
 
@@ -103,6 +103,13 @@ function Header() {
                     <div className={classes.root}></div>
                     {sessionStorage.getItem("username") != null ? (
                         <div>
+                            <IconButton
+                                onClick={() => (window as any).location ="/cart"}
+                                color="inherit" 
+                                aria-label="cart"
+                            >
+                                <ShoppingCart />
+                            </IconButton>
                             <Button onClick={() => {sessionStorage.removeItem("username"); sessionStorage.removeItem("loggedUser"); (window as any).location = "/";}} color="inherit">
                                 Выйти
                             </Button>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
 import { Shop, ShoppingCart, HomeWork, Settings } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
@@ -23,7 +23,7 @@ const MenuDrawer = ({ toggle, setToggle }) => {
                     <ListItemIcon><Shop /></ListItemIcon>
                     <ListItemText primary="Заказы" />
                 </ListItem>
-                <ListItem button key="cart">
+                <ListItem button key="cart" onClick={() => (window as any).location = "/cart"}>
                     <ListItemIcon><ShoppingCart /></ListItemIcon>
                     <ListItemText primary="Корзина" />
                 </ListItem>

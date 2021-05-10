@@ -98,18 +98,8 @@ const Store: React.FC<Props> = ({ id }) => {
         .then(res => {
             const menu = res;
             setMenu(menu);
-            console.log(menu);
         })
         .catch(err => console.error(err));  
-    }, []);
-
-    useEffect(() => {
-        cartService
-        .getCart()
-        .then(res => {
-            console.log(res);
-        })
-        .catch(err => console.error(err));
     }, []);
     
     const generate = () => {

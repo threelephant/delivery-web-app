@@ -31,4 +31,9 @@ const patchCart = async (data) => {
     return response.status;
 }
 
-export default { getCart, getProductCart, patchCart, addProduct, removeProduct };
+const clearCart = async () => {
+    const response = await axios.delete(url, token);
+    return response.status;
+}
+
+export default { getCart, getProductCart, patchCart, addProduct, removeProduct, clearCart };
