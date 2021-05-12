@@ -95,7 +95,7 @@ const Cart = () => {
             setCart(res);
         })
         .catch(err => console.error(err))
-    });
+    }, []);
 
     const onClear = async (event) => {
         event.preventDefault();

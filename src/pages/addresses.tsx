@@ -2,29 +2,24 @@ import React, { useState, useEffect } from "react";
 import { Container, List, ListItem, ListItemText, Typography, 
     ListItemSecondaryAction, IconButton, Grid, TextField, Button } from "@material-ui/core";
 import { Delete } from '@material-ui/icons';
-import addressService from '../services/user/addresses'
+import addressService from '../services/user/addresses';
+import AddAddress from '../components/address/addAddress';
+import ChangeAddress from '../components/address/changeAddress';
+import { AddressFormState } from '../components/address/addressFormState';
+import { Address } from '../components/address/addressInterface';
 
 interface AddressItemProps {
     address: Address,
+    chooseAddress: any,
 }
 
-interface Address {
-    id?: number,
-    locality?: string,
-    street?: string,
-    building?: string,
-    apartment?: string,
-    entrance?: string,
-    level?: string,
-}
-
-const AddressItem: React.FC<AddressItemProps> = ({ address }): JSX.Element => {
+const AddressItem: React.FC<AddressItemProps> = ({ address, chooseAddress }): JSX.Element => {
     const getAddressString = (address: Address) => {
         return `ул. ${address.street}, д. ${address.building}, кв. ${address.apartment}, п. ${address.entrance}, эт. ${address.level}`;
     }
 
     return (
-        <ListItem button>
+        <ListItem button onClick={() => chooseAddress(address)}>
             <ListItemText 
                 primary={getAddressString(address)} 
             />
@@ -39,7 +34,24 @@ const AddressItem: React.FC<AddressItemProps> = ({ address }): JSX.Element => {
 
 const NewOrder = () => {
     const [ addresses, setAddresses ] = useState([]);
+    const [ addressFormState, setAddressFormState ] = useState<AddressFormState>(AddressFormState.Closed);
+    const [ chosenAddress, setChosenAddress ] = useState<Address>(null);
 
+    const chooseAddress = (address: Address) => {
+        setAddressFormState(AddressFormState.ChangeAddress);
+        setChosenAddress(address);
+    }
+
+
+    const getFormState = () => {
+        if (addressFormState === AddressFormState.Closed) {
+            return (<div></div>);
+        } else if (addressFormState === AddressFormState.NewAddress) {
+            return (<AddAddress setAddressFormState={setAddressFormState} />);
+        } else {
+            return (<ChangeAddress address={chosenAddress} setAddressFormState={setAddressFormState} />);
+        }
+    }
     useEffect(() => {
         addressService
         .getAddresses()
@@ -47,10 +59,10 @@ const NewOrder = () => {
             setAddresses(res);
         })
         .catch(err => console.error(err))
-    });
+    }, []);
 
     const generateAddressesList = () => {
-        return addresses.map(value => <AddressItem address={value} />)
+        return addresses.map(value => <AddressItem address={value} chooseAddress={chooseAddress} />)
     }
     
     return (
@@ -66,92 +78,10 @@ const NewOrder = () => {
                 </Grid>
                 <Grid item xs />
                 <Grid item xs={6}>
-                    <Typography style={{ paddingBottom: 20 }} variant="h3">
-                        Добавление адреса
-                    </Typography>
-                    <form>
-                        <Grid container direction="column">
-                            <Grid item>
-                                <Grid style={{ paddingBottom: 20 }} container>
-                                    <Grid item xs={6}>
-                                        <TextField
-                                            // onChange={handleChange}
-                                            fullWidth
-                                            required
-                                            label="Улица"
-                                            name="street"
-                                            size="small"
-                                            type="text"
-                                            variant="outlined"
-                                        />
-                                    </Grid>
-                                    <Grid item xs />
-                                    <Grid item xs={5}>
-                                        <TextField
-                                            // onChange={handsleChange}
-                                            fullWidth
-                                            required
-                                            label="Номер"
-                                            name="building"
-                                            size="small"
-                                            type="text"
-                                            variant="outlined"
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item style={{ paddingBottom: 20 }}>
-                                <Grid container>
-                                    <Grid item xs={4}>
-                                        <TextField
-                                            // onChange={handleChange}
-                                            fullWidth
-                                            required
-                                            label="Квартира"
-                                            name="building"
-                                            size="small"
-                                            type="text"
-                                            variant="outlined"
-                                        />
-                                    </Grid>
-                                    <Grid item xs />
-                                    <Grid item xs={4}>
-                                        <TextField
-                                            // onChange={handleChange}
-                                            fullWidth
-                                            required
-                                            label="Подъезд"
-                                            name="entrance"
-                                            size="small"
-                                            type="text"
-                                            variant="outlined"
-                                        />
-                                    </Grid>
-                                    <Grid item xs />
-                                    <Grid item xs={2}>
-                                        <TextField
-                                            // onChange={handleChange}
-                                            fullWidth
-                                            required
-                                            label="Этаж"
-                                            name="level"
-                                            size="small"
-                                            type="text"
-                                            variant="outlined"
-                                        />
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                            <Grid item>
-                            <Button variant="contained" color="primary">
-                                Добавить адрес
-                            </Button>
-                            </Grid>
-                        </Grid>
-                    </form>
+                    {getFormState()}
                 </Grid>
             </Grid>
-            <Button variant="contained" color="primary">
+            <Button variant="contained" color="primary" onClick={() => setAddressFormState(AddressFormState.NewAddress)}>
                 Добавить адрес
             </Button>
         </Container>
