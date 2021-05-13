@@ -3,13 +3,48 @@ import { Typography, Grid, TextField, Button, IconButton } from "@material-ui/co
 import { Close } from '@material-ui/icons';
 import { AddressFormState } from './addressFormState';
 import { Address } from './addressInterface';
+import addressService from "../../services/user/addresses";
 
 interface AddressItemProps {
     address: Address,
     setAddressFormState: any,
+    getAddressesList: any,
 }
 
-const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormState }) => {
+const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormState, getAddressesList }) => {
+    const [ changedAddress, setChangedAddress ] = useState<Address>({});
+
+    useEffect(() => {
+        setChangedAddress(address);
+    }, [address])
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setChangedAddress(previousItem => ({
+            ...previousItem,
+            [name]: value
+        }));
+    }
+
+    const onChangeClick = (e) => {
+        e.preventDefault();
+
+        const addressRequest = Object.keys(changedAddress).filter(key => 
+            key !== 'id').reduce((obj, key) => {
+                obj[key] = changedAddress[key];
+                return obj;
+            }, {}
+        );
+        
+        addressService
+            .changeAddress(addressRequest, address.id)
+            .then(res => {
+                getAddressesList();
+                setAddressFormState(AddressFormState.Closed);
+            })
+            .catch(err => console.error(err));
+    }
+
     return (
         <div>
             <Grid container justify="space-between">
@@ -30,8 +65,8 @@ const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormStat
                         <Grid style={{ paddingBottom: 20 }} container>
                             <Grid item xs={6}>
                                 <TextField
-                                    // onChange={handleChange}
-                                    value={address.street}
+                                    onChange={handleChange}
+                                    value={changedAddress.street}
                                     fullWidth
                                     required
                                     label="Улица"
@@ -43,8 +78,8 @@ const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormStat
                             <Grid item xs />
                             <Grid item xs={5}>
                                 <TextField
-                                    // onChange={handsleChange}
-                                    value={address.building}
+                                    onChange={handleChange}
+                                    value={changedAddress.building}
                                     fullWidth
                                     required
                                     label="Номер"
@@ -59,8 +94,8 @@ const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormStat
                         <Grid container>
                             <Grid item xs={4}>
                                 <TextField
-                                    // onChange={handleChange}
-                                    value={address.apartment}
+                                    onChange={handleChange}
+                                    value={changedAddress.apartment}
                                     fullWidth
                                     required
                                     label="Квартира"
@@ -72,8 +107,8 @@ const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormStat
                             <Grid item xs />
                             <Grid item xs={4}>
                                 <TextField
-                                    // onChange={handleChange}
-                                    value={address.entrance}
+                                    onChange={handleChange}
+                                    value={changedAddress.entrance}
                                     fullWidth
                                     required
                                     label="Подъезд"
@@ -85,8 +120,8 @@ const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormStat
                             <Grid item xs />
                             <Grid item xs={2}>
                                 <TextField
-                                    // onChange={handleChange}
-                                    value={address.level}
+                                    onChange={handleChange}
+                                    value={changedAddress.level}
                                     fullWidth
                                     required
                                     label="Этаж"
@@ -98,8 +133,8 @@ const changeAddress: React.FC<AddressItemProps> = ({ address, setAddressFormStat
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" color="primary">
-                            Добавить адрес
+                        <Button variant="contained" color="primary" onClick={onChangeClick}>
+                            Изменить адрес
                         </Button>
                     </Grid>
                 </Grid>

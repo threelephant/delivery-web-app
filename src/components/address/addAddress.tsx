@@ -2,8 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Typography, Grid, TextField, Button, IconButton } from "@material-ui/core";
 import { Close } from '@material-ui/icons';
 import { AddressFormState } from './addressFormState';
+import addressService from "../../services/user/addresses";
 
-const addAddress = ({ setAddressFormState }) => {
+const addAddress = ({ setAddressFormState, getAddressesList }) => {
+    const [ newAddress, setNewAddress ] = useState({});
+
+    const handleChange = (e) => {
+        const { name, value } = e.target;
+        setNewAddress(previousItem => ({
+            ...previousItem,
+            [name]: value
+        }));
+    }
+
+    const onAddClick = (e) => {
+        e.preventDefault();
+
+        addressService
+        .addAddress(newAddress)
+        .then(res => {
+            getAddressesList();
+            setAddressFormState(AddressFormState.Closed);
+        })
+        .catch(err => console.error(err));
+    }
+
     return (
         <div>
             <Grid container justify="space-between">
@@ -24,7 +47,7 @@ const addAddress = ({ setAddressFormState }) => {
                         <Grid style={{ paddingBottom: 20 }} container>
                             <Grid item xs={6}>
                                 <TextField
-                                    // onChange={handleChange}
+                                    onChange={handleChange}
                                     fullWidth
                                     required
                                     label="Улица"
@@ -36,7 +59,7 @@ const addAddress = ({ setAddressFormState }) => {
                             <Grid item xs />
                             <Grid item xs={5}>
                                 <TextField
-                                    // onChange={handsleChange}
+                                    onChange={handleChange}
                                     fullWidth
                                     required
                                     label="Номер"
@@ -51,11 +74,11 @@ const addAddress = ({ setAddressFormState }) => {
                         <Grid container>
                             <Grid item xs={4}>
                                 <TextField
-                                    // onChange={handleChange}
+                                    onChange={handleChange}
                                     fullWidth
                                     required
                                     label="Квартира"
-                                    name="building"
+                                    name="apartment"
                                     size="small"
                                     type="text"
                                     variant="outlined" />
@@ -63,7 +86,7 @@ const addAddress = ({ setAddressFormState }) => {
                             <Grid item xs />
                             <Grid item xs={4}>
                                 <TextField
-                                    // onChange={handleChange}
+                                    onChange={handleChange}
                                     fullWidth
                                     required
                                     label="Подъезд"
@@ -75,7 +98,7 @@ const addAddress = ({ setAddressFormState }) => {
                             <Grid item xs />
                             <Grid item xs={2}>
                                 <TextField
-                                    // onChange={handleChange}
+                                    onChange={handleChange}
                                     fullWidth
                                     required
                                     label="Этаж"
@@ -87,7 +110,7 @@ const addAddress = ({ setAddressFormState }) => {
                         </Grid>
                     </Grid>
                     <Grid item>
-                        <Button variant="contained" color="primary">
+                        <Button variant="contained" color="primary" onClick={onAddClick}>
                             Добавить адрес
                         </Button>
                     </Grid>
