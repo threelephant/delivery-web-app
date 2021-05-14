@@ -84,7 +84,8 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
             </ListItemSecondaryAction>
         </ListItem>
     );
-} 
+}
+
 const Cart = () => {
     const [ cart, setCart ] = useState<Array<CartProduct>>([])
 

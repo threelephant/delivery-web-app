@@ -19,7 +19,7 @@ const MenuDrawer = ({ toggle, setToggle }) => {
                     <ListItemText primary="Иван" />
                 </ListItem>
                 <Divider />
-                <ListItem button key="orders">
+                <ListItem button key="orders" onClick={() => (window as any).location = "/orders"}>
                     <ListItemIcon><Shop /></ListItemIcon>
                     <ListItemText primary="Заказы" />
                 </ListItem>

@@ -132,10 +132,10 @@ const NewOrder = () => {
 
     const generateAddressesList = () => {
         return addresses.map(value => <AddressItem 
-                                        address={value} 
-                                        chooseAddress={chooseAddress} 
-                                        getAddressesList={getAddressesList}
-                                        setAddressFormState={setAddressFormState} 
+                                            address={value} 
+                                            chooseAddress={chooseAddress} 
+                                            getAddressesList={getAddressesList}
+                                            setAddressFormState={setAddressFormState} 
                                         />)
     }
     
