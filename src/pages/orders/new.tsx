@@ -45,7 +45,7 @@ const CartItem: React.FC<CartItemProps> = ({ product }) => {
                         <Grid container direction="row" alignItems="center">
                             <Grid item>
                                 <Typography variant="body1">
-                                    {productCount}
+                                    {productCount} шт.
                                 </Typography>
                             </Grid>
                         </Grid>
