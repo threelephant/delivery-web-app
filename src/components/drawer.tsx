@@ -31,7 +31,7 @@ const MenuDrawer = ({ toggle, setToggle }) => {
                     <ListItemIcon><HomeWork /></ListItemIcon>
                     <ListItemText primary="Адреса" />
                 </ListItem>
-                <ListItem button key="settings">
+                <ListItem button key="settings" onClick={() => (window as any).location = "/settings"}>
                     <ListItemIcon><Settings /></ListItemIcon>
                     <ListItemText primary="Настройки" />
                 </ListItem>

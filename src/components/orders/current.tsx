@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, List, ListItem, ListItemText, Typography, 
-    ListItemAvatar, Avatar, Stepper, Step, StepLabel, StepContent } from "@material-ui/core";
+import { Button, Typography, Stepper, Step, StepLabel, StepContent } from "@material-ui/core";
 import denyOrder from '../../services/order/denied';
 
 const getSteps = () => {
@@ -35,7 +34,7 @@ const CurrentOrder = ({ order, id }) => {
 
     const getIndex = () => {
         return steps.findIndex(i => i === order.order_status);
-    }    
+    }
 
     const onCancelOrder = () => {
         denyOrder(id)
