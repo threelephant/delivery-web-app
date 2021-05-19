@@ -74,7 +74,7 @@ const Settings = () => {
                 {getName(userInfo.name)}
             </Typography>
             <Typography variant="subtitle1">
-                {userInfo.phone}
+                т. {userInfo.phone}
             </Typography>
             <Typography style={{ paddingTop: 20 }} variant="h5">
                 Адреса
