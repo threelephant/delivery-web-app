@@ -2,8 +2,6 @@ import React, { useState } from "react";
 import register from "../services/auth/register";
 import { Container, TextField, 
     Typography, Grid, Button } from "@material-ui/core";
-import { useDispatch } from 'react-redux';
-import { signIn } from '../actions/auth';
 
 interface Credentials {
     login?: string,
@@ -16,7 +14,6 @@ interface Credentials {
 }
 
 function Register() {
-    const dispatch = useDispatch();
     const [credentials, setCredentials] = useState<Credentials>({});
 
     const handleChange = (e) => {

@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Theme, fade, makeStyles } from "@material-ui/core/styles";
 import { AppBar, Toolbar, Button, InputBase, Typography, Grid, IconButton } from '@material-ui/core';
 import { Search, Menu, ShoppingCart } from '@material-ui/icons';
-import { Link } from 'gatsby';
+import { Link, navigate } from 'gatsby';
 import MenuDrawer from './drawer';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -61,6 +61,24 @@ function Header() {
     const classes = useStyles();
 
     const [ toggle, setToggle ] = useState(false);
+    const [ search, setSearch ] = useState("");
+
+    const onChange = (e) => {
+        setSearch(e.target.value);
+    }
+
+    const onEnter = (e) => {
+        if (e.key === "Enter") {
+            navigate(
+                "/store/search",
+                {
+                    state: { search },
+                }
+            );
+
+            e.target.value = "";
+        }
+    }
 
     return (
         <div className={classes.root}>
@@ -98,6 +116,8 @@ function Header() {
                                     input: classes.inputInput,
                                 }}
                                 inputProps={{ 'aria-label': 'search' }}
+                                onChange={onChange}
+                                onKeyDown={onEnter}
                             />
                         </div>
                     <div className={classes.root}></div>
