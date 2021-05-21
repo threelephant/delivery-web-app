@@ -3,7 +3,8 @@ import { Container, TextField, Typography, Grid,
     Button, FormControl, Select, MenuItem } from "@material-ui/core";
 import categoryServices from "../../../services/store/categories";
 import addressServices from "../../../services/user/addresses";
-import newStore from "../../../services/owner/newStore";
+import changeStore from "../../../services/owner/changeStore";
+import getStore from "../../../services/owner/store";
 import Chips from "react-chips";
 import { navigate } from 'gatsby';
 
@@ -13,7 +14,7 @@ interface Store {
     categories?: Array<string>,
 }
 
-const AddStore = () => {
+const ChangeStore = ({ location }) => {
     const [ categories, setCategories ] = useState<Array<string>>([]);
     const [ addresses, setAddresses ] = useState([]);
     const [ chosenAddress, setChosenAddress ] = useState(0);
@@ -55,17 +56,18 @@ const AddStore = () => {
         tmpStore.address_id = chosenAddress;
         tmpStore.categories = categoriesChips;
 
-        newStore(tmpStore)
+        changeStore(location.state.id, tmpStore)
             .then(res => {
                 navigate("/owner/stores");
             })
             .catch(err => console.error(err));
+        console.log(tmpStore);
     }
 
     return (
         <Container>
             <Typography style={{ paddingTop: 20, paddingBottom: 20, }} variant="h3">
-                Добавить предприятие
+                Изменить предприятие
             </Typography>
             <form style={{ paddingTop: 20 }}>
                 <Grid container direction="column" xs={4} spacing={2}>
@@ -75,7 +77,7 @@ const AddStore = () => {
                             fullWidth
                             required
                             label="Название"
-                            name="title"
+                            name="last_name"
                             size="small"
                             variant="outlined"
                         />
@@ -109,7 +111,7 @@ const AddStore = () => {
                             type="submit" 
                             variant="contained"
                         >
-                            Добавить
+                            Изменить
                         </Button>
                     </Grid>
                 </Grid>
@@ -118,4 +120,4 @@ const AddStore = () => {
     );
 }
 
-export default AddStore;
+export default ChangeStore;

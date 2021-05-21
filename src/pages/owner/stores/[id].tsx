@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Container, Button, List, ListItem, ListItemText, Typography, 
     ListItemSecondaryAction, Grid, Fab } from "@material-ui/core";
+import deleteStore from "../../../services/owner/deleteStore";
 import getOwnerStore from "../../../services/owner/store";
 import { Address } from "../../../components/address/addressInterface";
-import { Link } from "gatsby";
+import { Link, navigate } from 'gatsby';
 
 interface Store {
     id?: number,
@@ -25,6 +26,14 @@ const Store = ({ id }) => {
             .catch(err => console.error(err));
     }, []);
 
+    const onDelete = () => {
+        deleteStore(id)
+            .then(res => {
+                navigate("/owner/stores");
+            })
+            .catch(err => console.error(err));
+    }
+
     const getRatingString = (rating: number) => {
         if (rating === undefined) return '';
         if (rating === null) return '';
@@ -40,6 +49,17 @@ const Store = ({ id }) => {
     const categoriesString = (categories: Array<string>) => {
         if (categories === undefined) return;
         return categories.join(", ");
+    }
+
+    const onClickChange = (e) => {
+        e.preventDefault();
+
+        navigate(
+            "/owner/action/changestore",
+            {
+                state: { id }
+            }
+        );
     }
 
     return (
@@ -61,22 +81,22 @@ const Store = ({ id }) => {
             </Typography>
             <Grid container direction="column" xs={4} style={{ paddingBottom: 20 }}>
                 <Grid item>
-                    <Button variant="contained" color="primary" fullWidth component={ Link } to="/owner/stores/products/{id}">
+                    <Button variant="contained" color="primary" fullWidth component={ Link } to={`/owner/products/${id}`}>
                         Товары
                     </Button>
                 </Grid>
                 <Grid item style={{ paddingTop: 15 }}>
-                    <Button variant="contained" color="primary" fullWidth component={ Link } to="/owner/stores/orders">
+                    <Button variant="contained" color="primary" fullWidth component={ Link } to={`/owner/orders/${id}`}>
                         Заказы
                     </Button>
                 </Grid>
                 <Grid item style={{ paddingTop: 15 }}>
-                    <Button variant="contained" color="primary" fullWidth component={ Link } to="/owner/stores/change">
+                    <Button variant="contained" onClick={onClickChange} color="primary" fullWidth>
                         Изменить
                     </Button>
                 </Grid>
                 <Grid item style={{ paddingTop: 15 }}>
-                    <Button variant="contained" color="secondary" fullWidth>
+                    <Button variant="contained" color="secondary" fullWidth onClick={onDelete}>
                         Удалить
                     </Button>
                 </Grid>
