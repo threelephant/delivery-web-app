@@ -86,7 +86,7 @@ function Register() {
                                         onChange={handleChange}
                                         fullWidth
                                         required
-                                        label="Пароль"
+                                        label="Повторите пароль"
                                         name="confirmPassword"
                                         size="small"
                                         type="password"

@@ -3,6 +3,7 @@ import cartService from "../services/user/cart";
 import { Container, List, ListItem, ListItemText, Typography, 
     ListItemSecondaryAction, Grid, Fab, Button } from "@material-ui/core";
 import { Add, Remove } from '@material-ui/icons';
+import { navigate } from "gatsby";
 
 interface CartItemProps {
     product: CartProduct,
@@ -107,6 +108,12 @@ const Cart = () => {
             .catch(err => console.error(err));
     }
 
+    const onSubmit = (event) => {
+        event.preventDefault();
+
+        navigate("/orders/new");
+    }
+
     const generate = () => {
         const newCart = cart.filter(product => product.count !== 0);
         return newCart.map(value => <CartItem product={value} />)
@@ -122,7 +129,7 @@ const Cart = () => {
             </List>
             <Grid xs={4} container justify="space-between">
                 <Grid item>
-                    <Button variant="contained" color="primary">
+                    <Button variant="contained" color="primary" onClick={onSubmit}>
                         Оформление заказа
                     </Button>
                 </Grid>

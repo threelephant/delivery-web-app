@@ -1,10 +1,17 @@
 import React from 'react';
-import { Container, List, ListItem, ListItemText, Typography, 
-    ListItemSecondaryAction, Grid, Select, MenuItem, FormControl,
-    Button, Dialog, DialogTitle, DialogContent, DialogContentText, 
-    DialogActions } from "@material-ui/core";
+import { Button, Dialog, DialogTitle, DialogContent, DialogActions } from "@material-ui/core";
+import deleteUser from "../../services/user/delete";
 
 const DialogDeleteAccount = ({open, handleClose}) => {
+    const onDelete = () => {
+        deleteUser()
+            .then(res => {
+                sessionStorage.clear();
+                (window as any).location = "/";
+            })
+            .catch(err => console.error(err));
+    }
+
     return (
         <Dialog
             open={open}
@@ -20,7 +27,7 @@ const DialogDeleteAccount = ({open, handleClose}) => {
             </DialogContent>
             <DialogActions>
             <Button 
-                // onClick={onDelete} 
+                onClick={onDelete} 
                 color="primary"
             >
                 Да
