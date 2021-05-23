@@ -3,6 +3,7 @@ import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Typography
 import { Shop, ShoppingCart, HomeWork, Settings, Store, } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import getOwnerStores from "../services/owner/stores";
+import getIsAdmin from "../services/user/isAdmin";
 
 const useStyles = makeStyles({
     list: {
@@ -13,6 +14,7 @@ const useStyles = makeStyles({
 const MenuDrawer = ({ toggle, setToggle }) => {
     const classes = useStyles();
     const [ isOwner, setIsOwner ] = useState(false);
+    const [ isAdmin, setIsAdmin ] = useState(false);
 
     useEffect(() => {
         getOwnerStores()
@@ -24,7 +26,19 @@ const MenuDrawer = ({ toggle, setToggle }) => {
                }
             })
             .catch(err => console.error(err));
-    }, [])
+    }, []);
+
+    useEffect(() => {
+        getIsAdmin()
+            .then(res => {
+                if (res.role === "admin") {
+                    setIsAdmin(true);
+                } else {
+                    setIsAdmin(false);
+                }
+            })
+            .catch(err => console.error(err));
+    }, []);
 
     const listMenu = () => (
         <div>
@@ -50,6 +64,15 @@ const MenuDrawer = ({ toggle, setToggle }) => {
                     (<ListItem button key="stores" onClick={() => (window as any).location = "/owner/stores"}>
                         <ListItemIcon><Store /></ListItemIcon>
                         <ListItemText primary="Предприятия" />
+                    </ListItem>)
+                    :
+                    <div />
+                }
+                {
+                    isAdmin ? 
+                    (<ListItem button key="roles" onClick={() => (window as any).location = "/admin/roles"}>
+                        <ListItemIcon><Settings /></ListItemIcon>
+                        <ListItemText primary="Управление ролями" />
                     </ListItem>)
                     :
                     <div />
