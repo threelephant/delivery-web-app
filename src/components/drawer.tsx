@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Drawer, List, Divider, ListItem, ListItemIcon, ListItemText, Typography } from '@material-ui/core';
-import { Shop, ShoppingCart, HomeWork, Settings, Store, } from '@material-ui/icons';
+import { Shop, ShoppingCart, HomeWork, Settings, Store, Group, } from '@material-ui/icons';
 import { makeStyles } from '@material-ui/core/styles';
 import getOwnerStores from "../services/owner/stores";
 import getIsAdmin from "../services/user/isAdmin";
@@ -71,7 +71,7 @@ const MenuDrawer = ({ toggle, setToggle }) => {
                 {
                     isAdmin ? 
                     (<ListItem button key="roles" onClick={() => (window as any).location = "/admin/roles"}>
-                        <ListItemIcon><Settings /></ListItemIcon>
+                        <ListItemIcon><Group /></ListItemIcon>
                         <ListItemText primary="Управление ролями" />
                     </ListItem>)
                     :
