@@ -38,7 +38,7 @@ const AddProduct = ({ store_id }) => {
     return (
         <Container>
             <Typography style={{ paddingTop: 20, paddingBottom: 20, }} variant="h3">
-                Добавить предприятие
+                Добавить продукт
             </Typography>
             <form style={{ paddingTop: 20 }}>
                 <Grid container direction="column" xs={4} spacing={2}>

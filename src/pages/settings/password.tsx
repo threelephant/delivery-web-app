@@ -41,7 +41,7 @@ const Password = () => {
                 Настройки
             </Typography>
             <Typography variant="h4">
-                Изменение профиля
+                Изменение пароля
             </Typography>
             <form style={{ paddingTop: 20 }}>
                 <Grid container direction="column" xs={4} spacing={2}>

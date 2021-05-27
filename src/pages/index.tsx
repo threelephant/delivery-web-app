@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import services from "../services/store/categories";
-import { Container, List, ListItem, ListItemText } from "@material-ui/core";
+import { Container, List, ListItem, ListItemText, Divider, } from "@material-ui/core";
 import { Link } from 'gatsby';
 
 function Home() {
@@ -18,16 +18,19 @@ function Home() {
 
     const generate = () => {
         return categories.map((value: string) =>
-            <Link 
-                style={{ color: "inherit", textDecoration: "inherit" }} 
-                to={`/category/${value}`}
-            >
-                <ListItem button>
-                    <ListItemText
-                        primary={value}
-                    />
-                </ListItem>
-            </Link>
+            <>
+                <Link 
+                    style={{ color: "inherit", textDecoration: "inherit" }} 
+                    to={`/category/${value}`}
+                >
+                    <ListItem button>
+                        <ListItemText
+                            primary={value}
+                        />
+                    </ListItem>
+                </Link>
+                <Divider />
+            </>
         );
     }
 
